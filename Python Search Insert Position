@@ -1,0 +1,42 @@
+# //Problem35. Search Insert Position
+# Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+
+# You must write an algorithm with O(log n) runtime complexity.
+
+ 
+
+# Example 1:
+
+# Input: nums = [1,3,5,6], target = 5
+# Output: 2
+# Example 2:
+
+# Input: nums = [1,3,5,6], target = 2
+# Output: 1
+# Example 3:
+
+# Input: nums = [1,3,5,6], target = 7
+# Output: 4
+
+# Code:
+def binary(nums,lo,hi,target): 
+        if(len(nums)==1):
+            if(nums[0]<target):
+                return 1
+            elif(nums[0]>=target):
+                return 0
+        if(hi>lo):
+            mid=(lo+(hi-1))//2
+            if(nums[mid]==target):
+                return mid
+            if(nums[mid]>target):
+                return binary(nums,lo,mid-1,target)
+            return binary(nums,mid+1,hi,target)
+        #element is not present in the list
+        if(nums[lo]<target):
+            return lo+1
+        else:
+            return lo
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        return binary(nums,0,len(nums)-1,target)
