@@ -1,0 +1,88 @@
+//Problem9. Palindrome Number
+Given an integer x, return true if x is palindrome integer.
+
+An integer is a palindrome when it reads the same backward as forward.
+
+For example, 121 is a palindrome while 123 is not.
+ 
+
+Example 1:
+
+Input: x = 121
+Output: true
+Explanation: 121 reads as 121 from left to right and from right to left.
+
+Example 2:
+
+Input: x = -121
+Output: false
+Explanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.
+
+Example 3:
+
+Input: x = 10
+Output: false
+Explanation: Reads 01 from right to left. Therefore it is not a palindrome.
+
+Code:
+Python
+class Solution: 
+    def isPalindrome(self, x: int) -> bool: 
+        if(x<0): 
+            return False 
+        x=str(x) 
+        if(x==x[::-1]): 
+            return True 
+        return False
+
+Java
+class Solution { 
+    public boolean isPalindrome(int x) { 
+        if(x<0 || x>=(Math.pow(2,31)-1)){ 
+            return false; 
+        } 
+        if(x==0){ 
+            return true; 
+        } 
+        String str=Integer.toString(x); 
+        int l=str.length(); 
+        int originalnum=x; 
+        int num=0; 
+        while(x!=0){ 
+            int n= x%10; 
+            x=x/10; 
+            num+=n*Math.pow(10,--l); 
+        } 
+        // System.out.println(num); 
+        if(originalnum==num){ 
+            return true; 
+        } 
+        return false; 
+    } 
+}
+
+Cpp
+class Solution { 
+    public: bool isPalindrome(int x) { 
+        if(x<0 || x>=(pow(2,31)-1)){ 
+            return false; 
+        } 
+        if(x==0){ 
+            return true; 
+        } 
+        string str=to_string(x); 
+        int l=str.length(); 
+        long originalnum=x; 
+        long num=0; 
+        while(x!=0){ 
+            int n= x%10; 
+            x=x/10; 
+            num+=n*pow(10,--l); 
+        } 
+        // System.out.println(num); 
+        if(originalnum==num){ 
+            return true; 
+        } 
+        return false; 
+    } 
+};
