@@ -1,0 +1,74 @@
+//Problem1689. Partitioning Into Minimum Number Of Deci-Binary Numbers
+A decimal number is called deci-binary if each of its digits is either 0 or 1 without any leading zeros. For example, 101 and 1100 are deci-binary, while 112 and 3001 are not.
+
+Given a string n that represents a positive decimal integer, return the minimum number of positive deci-binary numbers needed so that they sum up to n.
+
+Example 1:
+
+Input: n = "32"
+Output: 3
+Explanation: 10 + 11 + 11 = 32
+
+Example 2:
+
+Input: n = "82734"
+Output: 8
+
+Example 3:
+
+Input: n = "27346209830709182346"
+Output: 9
+
+Code:
+Java:
+class Solution {
+    public int minPartitions(String n) {
+        // int num=Integer.parseInt(n); //not used for long integers only till 32 bits acceptable 
+        // System.out.println(num);
+        // int max= num%10;
+        // num=num/10;
+        // while(num!=0){
+        //     int rem= num%10;
+        //     num=num/10;
+        //     max=Math.max(max,rem);
+        // }
+        // return max;
+        int max=Character.getNumericValue(n.charAt(0));
+        // System.out.println(max);
+        for(int i=1;i<n.length();i++){
+            int num=  Character.getNumericValue(n.charAt(i));
+            max=Math.max(num,max);
+            if(max==9){
+                break;
+            }
+        }
+        return max;
+        // 2-> public int minPartitions(String n) {
+        // int res = 0;
+        // for (int i = 0; i < n.length(); ++i)
+        //     res = Math.max(res, n.charAt(i) - '0');
+        // return res;
+        // }
+        // 3-> public int minPartitions(String n) {
+        // return n.chars().max().getAsInt() - '0';
+        // }
+    }
+}
+
+Python:
+class Solution:
+    def minPartitions(self, n: str) -> int:
+        list_=[]
+        list_[:0]=n
+        # print(list_)
+        return max(list_)
+    # def minPartitions(self, x):
+    #     return int(max(x))
+
+C++:
+class Solution {
+public:
+    int minPartitions(string n) {
+        return *max_element(begin(n), end(n)) - '0';
+    }
+};
