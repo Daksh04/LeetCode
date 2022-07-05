@@ -1,0 +1,85 @@
+//Problem128. Longest Consecutive Sequence
+Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+
+You must write an algorithm that runs in O(n) time.
+
+ 
+
+Example 1:
+
+Input: nums = [100,4,200,1,3,2]
+Output: 4
+Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+Example 2:
+
+Input: nums = [0,3,7,2,5,8,4,6,0,1]
+Output: 9
+
+Code:
+Java:
+class Solution {
+    public int longestConsecutive(int[] num) {
+    int res = 0;
+    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+    for (int n : num) {
+        if (!map.containsKey(n)) {
+            int left = (map.containsKey(n - 1)) ? map.get(n - 1) : 0;
+            int right = (map.containsKey(n + 1)) ? map.get(n + 1) : 0;
+            // sum: length of the sequence n is in
+            int sum = left + right + 1;
+            map.put(n, sum);
+            
+            // keep track of the max length 
+            res = Math.max(res, sum);
+            
+            // extend the length to the boundary(s)
+            // of the sequence
+            // will do nothing if n has no neighbors
+            map.put(n - left, sum);
+            map.put(n + right, sum);
+        }
+        else {
+            // duplicates
+            continue;
+        }
+    }
+    return res;
+}
+}
+
+C++:
+class Solution {
+    public:
+        int longestConsecutive(vector<int>& nums) {
+            unordered_set<int> s(nums.begin(),nums.end()); // this is faster
+            
+            // for(int i = 0; i<nums.size(); i++)
+            // {
+            //     s.insert(nums[i]);
+            // }
+            
+            int longest_sequence = 0;
+            
+            for(int i=0; i<nums.size(); i++)
+            {
+                if(s.find(nums[i] - 1)!=s.end())
+                    continue;
+                
+                else
+                {
+                    int count = 0;
+                    int current_element = nums[i];
+                    
+                    while(s.find(current_element) != s.end())
+                    {
+                        count++;
+                        current_element++;
+                    }
+                    
+                    longest_sequence = max(longest_sequence,count);
+                }
+            }
+            
+            return longest_sequence;
+        }
+    };
