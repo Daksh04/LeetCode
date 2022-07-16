@@ -1,0 +1,45 @@
+//Problem576. Out of Boundary Paths
+There is an m x n grid with a ball. The ball is initially at the position [startRow, startColumn]. You are allowed to move the ball to one of the four adjacent cells in the grid (possibly out of the grid crossing the grid boundary). 
+You can apply at most maxMove moves to the ball.
+Given the five integers m, n, maxMove, startRow, startColumn, return the number of paths to move the ball out of the grid boundary. Since the answer can be very large, return it modulo 109 + 7.
+
+Example 1:
+
+Input: m = 2, n = 2, maxMove = 2, startRow = 0, startColumn = 0
+Output: 6
+
+Example 2:
+
+Input: m = 1, n = 3, maxMove = 3, startRow = 0, startColumn = 1
+Output: 12
+
+Code:
+class Solution {
+    private long mod = 1000000007;
+    private Long[][][] memo= null;
+    public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        memo= new Long[m+1][n+1][maxMove+1];
+        return (int) answer(m,n,maxMove,startRow,startColumn);
+    }
+    public long answer(int m, int n, int moves, int row, int col){
+        
+        if(moves<0){
+            return 0;
+        }
+        if(row>=m || col>=n || row<0 || col<0){
+            return 1;
+        }
+        if(memo[row][col][moves]!=null){
+            return memo[row][col][moves];
+        }
+        
+        long total=0;
+        long left= answer(m,n,moves-1,row,col-1);
+        long right= answer(m,n,moves-1,row,col+1);
+        long top= answer(m,n,moves-1,row-1,col);
+        long bottom= answer(m,n,moves-1,row+1,col);
+        total= ((left+right+top+bottom)%mod);
+        memo[row][col][moves] = total;
+        return total;
+    }
+}
