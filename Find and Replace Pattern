@@ -1,0 +1,62 @@
+//Problem890. Find and Replace Pattern
+Given a list of strings words and a string pattern, return a list of words[i] that match pattern. You may return the answer in any order.
+
+A word matches the pattern if there exists a permutation of letters p so that after replacing every letter x in the pattern with p(x), we get the desired word.
+
+Recall that a permutation of letters is a bijection from letters to letters: every letter maps to another letter, and no two letters map to the same letter.
+
+Example 1:
+Input: words = ["abc","deq","mee","aqq","dkd","ccc"], pattern = "abb"
+Output: ["mee","aqq"]
+Explanation: "mee" matches the pattern because there is a permutation {a -> m, b -> e, ...}. 
+"ccc" does not match the pattern because {a -> c, b -> c, ...} is not a permutation, since a and b map to the same letter.
+
+Example 2:
+Input: words = ["a","b","c"], pattern = "a"
+Output: ["a","b","c"]
+
+Code:
+class Solution {
+    public List<String> findAndReplacePattern(String[] words, String pattern) {
+        List<String> al= new ArrayList<>();
+        HashMap<Character,Integer> hm=new HashMap<>();
+        HashMap<Character,Integer> hp=new HashMap<>();
+        for(int i=0;i<words.length;i++){
+            if(words[i].length()==pattern.length()){
+                int val=0,valp=0;
+                hm.clear();
+                hp.clear();
+                boolean flag=true;
+                for(int j=0;j<pattern.length();j++){
+                    int c=0,cp=0;;
+                    if(!hm.containsKey(words[i].charAt(j))){
+                        hm.put(words[i].charAt(j),j);
+                        c++;
+                    }
+                    else{
+                        val=hm.get(words[i].charAt(j));
+                    }
+                    if(!hp.containsKey(pattern.charAt(j))){
+                        hp.put(pattern.charAt(j),j);
+                        cp++;
+                    }
+                    else{
+                        valp=hp.get(pattern.charAt(j));
+                    }
+                    if(val!=valp){
+                        flag=false;
+                        break;
+                    }
+                    if(c!=cp){
+                        flag=false;
+                        break;
+                    }
+                }
+                if(flag==true){
+                    al.add(words[i]);
+                }
+            }
+        }
+        return al;
+    }
+}
