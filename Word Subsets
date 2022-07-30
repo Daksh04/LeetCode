@@ -1,0 +1,85 @@
+//Problem916.Word Subsets
+You are given two string arrays words1 and words2.
+
+A string b is a subset of string a if every letter in b occurs in a including multiplicity.
+
+For example, "wrr" is a subset of "warrior" but is not a subset of "world".
+A string a from words1 is universal if for every string b in words2, b is a subset of a.
+
+Return an array of all the universal strings in words1. You may return the answer in any order.
+
+Example 1:
+Input: words1 = ["amazon","apple","facebook","google","leetcode"], words2 = ["e","o"]
+Output: ["facebook","google","leetcode"]
+
+Example 2:
+Input: words1 = ["amazon","apple","facebook","google","leetcode"], words2 = ["l","e"]
+Output: ["apple","google","leetcode"]
+
+Code:
+Python:
+class Solution:
+    def wordSubsets(self, words1: List[str], words2: List[str]) -> List[str]:
+        list1=[]
+        for i in words1:
+            flag= True
+            list2=[]
+            for j in words2:
+                w=i
+                if j in list2:
+                    words2.remove(j)
+                    continue
+                list2.append(j)   
+                for k in j:
+                    if k in w:
+                        w = w.replace(k,"",1)
+                    else:
+                        flag=False
+                        break
+                if(flag==False):
+                    break
+            if flag==True:
+                list1.append(i)
+        return list1
+
+Java:
+class Solution {
+    public List<String> wordSubsets(String[] A, String[] B) 
+    {
+        List<String> result = new ArrayList<>();
+        
+        int[] target = new int[26];
+        
+        for(String b:B)
+        {
+            int[] temp = new int[26];
+            
+            for(char c:b.toCharArray())
+            {
+                temp[c-'a']++;
+                target[c-'a'] = Math.max(target[c-'a'],temp[c-'a']);
+            }
+        }
+        
+        for(String a:A)
+        {
+            int[] arr = new int[26];
+            for(char c:a.toCharArray()) arr[c-'a']++;
+            
+            if(subset(arr,target))
+            {
+                result.add(a);
+            }
+        }
+        return result;
+    }
+    
+    private boolean subset(int source[], int dest[])
+    {
+        for(int i=0; i<26;i++)
+        {
+            if(dest[i]>source[i]) return false;
+        }
+        return true;
+    }
+}
