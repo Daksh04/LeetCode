@@ -1,0 +1,79 @@
+//Problem659. Split Array into Consecutive Subsequences
+You are given an integer array nums that is sorted in non-decreasing order.
+
+Determine if it is possible to split nums into one or more subsequences such that both of the following conditions are true:
+
+Each subsequence is a consecutive increasing sequence (i.e. each integer is exactly one more than the previous integer).
+All subsequences have a length of 3 or more.
+Return true if you can split nums according to the above conditions, or false otherwise.
+
+A subsequence of an array is a new array that is formed from the original array by deleting some (can be none) of the elements without disturbing the relative positions of the remaining elements. (i.e., [1,3,5] is a subsequence of [1,2,3,4,5] while [1,3,2] is not).
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3,3,4,5]
+Output: true
+Explanation: nums can be split into the following subsequences:
+[1,2,3,3,4,5] --> 1, 2, 3
+[1,2,3,3,4,5] --> 3, 4, 5
+Example 2:
+
+Input: nums = [1,2,3,3,4,4,5,5]
+Output: true
+Explanation: nums can be split into the following subsequences:
+[1,2,3,3,4,4,5,5] --> 1, 2, 3, 4, 5
+[1,2,3,3,4,4,5,5] --> 3, 4, 5
+Example 3:
+
+Input: nums = [1,2,3,4,4,5]
+Output: false
+Explanation: It is impossible to split nums into consecutive increasing subsequences of length 3 or more.
+
+Code:
+class Solution {
+    public boolean isPossible(int[] nums) {
+        Stack<LinkedList<Integer>> stack = new Stack<>();
+        for (int i: nums){
+            if (stack.empty()){
+                stack.add(new LinkedList<Integer>(Arrays.asList(i)));
+                continue;
+            }
+            if (stack.peek().getLast() == i - 1){
+                LinkedList<Integer> toadd = stack.pop();
+                toadd.add(i);
+                stack.push(toadd);
+                continue;
+            }
+            ArrayList<LinkedList<Integer>> toPutBack = new ArrayList<>();
+            while (!stack.empty() && stack.peek().getLast() == i){
+                toPutBack.add(stack.pop());
+            }
+            if (!stack.empty() && stack.peek().getLast() == i - 1){
+                LinkedList<Integer> toadd = stack.pop();
+                toadd.add(i);
+                stack.push(toadd);
+            } else {
+                toPutBack.add(new LinkedList<Integer>(Arrays.asList(i)));
+            }
+            
+            Collections.sort(toPutBack, new Comparator<LinkedList<Integer>>(){
+                @Override
+                public int compare(LinkedList l1, LinkedList l2){
+                    return (l1.size() < l2.size())?1:(l1.size()>l2.size()?-1:0);
+                }
+            });
+            
+            for (LinkedList<Integer> s: toPutBack){
+                stack.push(s);
+            }
+        }
+        for (LinkedList<Integer> i: stack){
+            if (i.size() < 3){
+                return false;
+            }
+        }
+        return true;
+    }
+}
