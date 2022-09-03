@@ -1,0 +1,49 @@
+//Problem967. Numbers With Same Consecutive Differences
+Return all non-negative integers of length n such that the absolute difference between every two consecutive digits is k.
+
+Note that every number in the answer must not have leading zeros. For example, 01 has one leading zero and is invalid.
+
+You may return the answer in any order.
+
+ 
+
+Example 1:
+
+Input: n = 3, k = 7
+Output: [181,292,707,818,929]
+Explanation: Note that 070 is not a valid number, because it has leading zeroes.
+Example 2:
+
+Input: n = 2, k = 1
+Output: [10,12,21,23,32,34,43,45,54,56,65,67,76,78,87,89,98]
+
+Code:
+class Solution {
+    public int[] numsSameConsecDiff(int n, int k) {
+       LinkedList<Integer> res = new LinkedList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+    for (int i = 1; i <n; i++) {
+        int size = res.size();
+        for (int j = 0; j < size; j++) {
+            int t = res.removeFirst();
+            if (t == 0) continue;
+            int mod = t % 10;
+            if (k == 0) {
+                res.add(t * 10 + mod);
+                continue;
+            }
+            if (mod - k >= 0) {
+                res.add(t * 10 + mod - k);
+            }
+            if (mod + k < 10) {
+                res.add(t * 10 + mod + k);
+            }
+        }
+    }
+    int[] arr = new int[res.size()];
+    int i = 0;
+    while (!res.isEmpty()) {
+        arr[i++] = res.removeFirst();
+    }
+    return arr;
+  }
+}
