@@ -47,4 +47,4 @@ dp[i][j][trans] = -1;
 return function(prices,dp,k,n,0,0);
 
 }
-}
+} 
