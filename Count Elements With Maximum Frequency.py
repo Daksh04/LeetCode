@@ -46,4 +46,14 @@ class Solution:
                 final_sum += max_value 
 
         return final_sum
+
+# Code: Python 3 [Using Counter]
+from collections import Counter
+from typing import List
+
+class Solution:
+    def maxFrequencyElements(self, nums: List[int]) -> int:
+        freq = Counter(nums)
+        max_value = max(freq.values())
+        return sum(v for v in freq.values() if v == max_value) 
         
